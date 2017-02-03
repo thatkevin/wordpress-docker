@@ -1,0 +1,22 @@
+version: "2"
+services:
+  wordpress:
+    build: ./web
+    depends_on:
+      - "mysql"
+    ports:
+      - 8080:80
+    environment:
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WP_ADMIN_USER=${WP_ADMIN_USER}
+      - WP_ADMIN_USER_PASS_HASH=${WP_ADMIN_USER_PASS_HASH}
+      - WORDPRESS_DB_NAME=lcweb
+      - WORDPRESS_DB_HOST=mysql
+  mysql:
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PWD}
+    ports:
+      - 3308:3306
+    volumes:
+      - ./seed/:/docker-entrypoint-initdb.d/
